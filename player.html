@@ -1,0 +1,127 @@
+<body>
+  <table
+    id="player"
+    style="
+      background-color: #111;
+      color: #fff;
+      font-family: Helvetica, Arial;
+      font-size: 3vmin;
+      border-radius: 10px;
+      filter: opacity(0.8);
+      width: 100%;
+    "
+  >
+    <tr height="200px">
+      <td width="20%" align="center">
+        <img
+          id="player-album-art"
+          style="margin: 1em; max-height: 40vmin; border-radius: 10px"
+        />
+      </td>
+      <td width="80%">
+        <div style="margin: 1em 1em 1em 0">
+          <div id="player-song" style="font-size: 2em"></div>
+          <div
+            id="player-artist"
+            style="font-size: 1.3em; margin-bottom: 1em"
+          ></div>
+          <a id="player-song-link" href="" style="color: #fff"> 🎵 Song </a>
+          &nbsp;
+          <a id="player-artist-link" href="" style="color: #fff">
+            🧑‍🎤 Artist</a
+          >
+          &nbsp;
+          <a id="player-album-link" href="" style="color: #fff"> 💽 Album</a>
+          &nbsp;
+          <a id="player-mp3-link" href="" target="_blank" style="color: #fff">
+            📻 MP3</a
+          >
+          <div id="player-status" style="margin: 2em 0 1em 0"></div>
+          <div
+            id="player-progress-back"
+            style="border: 0.15em solid #eee; height: 1em; border-radius: 10px"
+          >
+            <div
+              id="player-progress"
+              style="
+                background-color: #eee;
+                border: 0.1em solid transparent;
+                height: 0.75em;
+                border-radius: 10px;
+              "
+            ></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <div
+      id="player-background"
+      class="background"
+      style="
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: -10;
+        background-position: center center;
+        background-size: 100%;
+        filter: blur(2em);
+        position: absolute;
+      "
+    ></div>
+  </table>
+
+  <script>
+    var songData;
+    fetch("https://spotify.naush.workers.dev/get-now-playing")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.hasOwnProperty("ERROR")) {
+          document.getElementById("player-song").innerHTML =
+            "Nothing is playing currently.";
+          document.getElementById("player-artist").innerHTML =
+            "Naushikha's Spotify";
+          return;
+        }
+        songData = data;
+        document.getElementById("player-song").innerHTML = data.item.name;
+        document.getElementById("player-artist").innerHTML =
+          data.item.artists[0].name;
+        document.getElementById("player-status").innerHTML = data.is_playing
+          ? "▶️ Playing..."
+          : "⏸ Paused";
+        document
+          .getElementById("player-album-art")
+          .setAttribute("src", data.item.album.images[1].url);
+        document
+          .getElementById("player-progress")
+          .setAttribute(
+            "style",
+            document.getElementById("player-progress").getAttribute("style") +
+              `width: ${(data.progress_ms * 100) / data.item.duration_ms}%`
+          );
+
+        document
+          .getElementById("player-background")
+          .setAttribute(
+            "style",
+            document.getElementById("player-background").getAttribute("style") +
+              `background-image: url(${data.item.album.images[1].url})`
+          );
+
+        // Set the links to spotify stuff
+        document
+          .getElementById("player-song-link")
+          .setAttribute("href", data.item.external_urls.spotify);
+        document
+          .getElementById("player-artist-link")
+          .setAttribute("href", data.item.artists[0].external_urls.spotify);
+        document
+          .getElementById("player-album-link")
+          .setAttribute("href", data.item.album.external_urls.spotify);
+        document
+          .getElementById("player-mp3-link")
+          .setAttribute("href", data.item.preview_url);
+      });
+  </script>
+</body>
