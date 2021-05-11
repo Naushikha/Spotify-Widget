@@ -1,0 +1,22 @@
+<h2>Currently Listening 🔊&nbsp;</h2>
+<iframe
+  frameborder="0"
+  height="380"
+  id="github-iframe"
+  src=""
+  width="100%"
+></iframe>
+<script>
+  fetch(
+    "https://api.github.com/repos/Naushikha/spotify-widget/contents/player.min.html"
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      var iframe = document.getElementById("github-iframe");
+      iframe.src =
+        "data:text/html;charset=utf-8;base64," +
+        encodeURIComponent(data["content"]);
+    });
+</script>
