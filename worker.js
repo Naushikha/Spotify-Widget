@@ -81,31 +81,37 @@ async function handleCallback(request) {
 
 async function handleNowPlaying(request) {
   // Get a new access token everytime :D << Easy way out (Without checking expire time)
-  let response = await fetch("https://accounts.spotify.com/api/token", {
+  var access_token = await fetch("https://accounts.spotify.com/api/token", {
     method: "post",
     headers: {
       Authorization: "Basic " + btoa(CLIENT_ID + ":" + CLIENT_SECRET),
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: `grant_type=refresh_token&refresh_token=${REFRESH_TOKEN}`,
-  });
-  // Assuming no errors would occur :P
-  response = await response.json();
-  access_token = response.access_token;
+  })
+    .then((response) => {
+      // TODO: Check errors her
+      return response.json();
+    })
+    .then((data) => {
+      return data.access_token;
+    });
 
-  response = await fetch(
+  songData = await fetch(
     "https://api.spotify.com/v1/me/player/currently-playing",
     {
       headers: {
         Authorization: "Bearer " + access_token,
       },
     }
-  );
+  ).then((response) => {
+    // TODO: Check errors here
+    return response.text();
+  });
   // https://mcculloughwebservices.com/2016/09/23/handling-a-null-response-from-an-api/
   // If response is empty throw error
-  var responseText = await response.text();
-  if (!responseText) response = { ERROR: "Couldn't retrieve now playing." };
-  else response = JSON.parse(responseText);
+  if (!songData) songData = { ERROR: "Couldn't retrieve now playing." };
+  else songData = JSON.parse(songData);
 
   // Add CORS to allow requests
   const corsHeaders = {
@@ -114,7 +120,7 @@ async function handleNowPlaying(request) {
     "Access-Control-Max-Age": "86400",
   };
 
-  return new Response(JSON.stringify(response, null, 2), {
+  return new Response(JSON.stringify(songData, null, 2), {
     headers: corsHeaders,
   });
 }
