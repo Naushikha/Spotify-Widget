@@ -104,6 +104,13 @@
             "
           ></div>
         </div>
+        <a
+          href="https://github.com/Naushikha/Spotify-Widget"
+          style="color: white"
+          >Spotify-Widget</a
+        >
+        by
+        <a href="https://itsnaush.ga" style="color: white">Naushikha</a>
       </div>
     </td>
   </tr>
@@ -127,8 +134,9 @@
 
 <script>
   var songData, progressSeconds, totalSeconds, progressInterval;
+  var serviceHost = "https://spotify.naush.workers.dev";
   function updatePlayer() {
-    fetch("https://spotify.naush.workers.dev/get-now-playing")
+    fetch(serviceHost + "/get-now-playing")
       .then((response) => response.json())
       .then((data) => {
         if (data.hasOwnProperty("ERROR")) {
