@@ -104,13 +104,16 @@
             "
           ></div>
         </div>
-        <a
-          href="https://github.com/Naushikha/Spotify-Widget"
-          style="color: white"
-          >Spotify-Widget</a
-        >
-        by
-        <a href="https://itsnaush.ga" style="color: white">Naushikha</a>
+        <div style="float: right; font-size: medium">
+          👾
+          <a
+            href="https://github.com/Naushikha/Spotify-Widget"
+            style="color: white"
+            >Spotify-Widget</a
+          >
+          by
+          <a href="https://itsnaush.ga" style="color: white">Naushikha</a> 💀
+        </div>
       </div>
     </td>
   </tr>
@@ -133,15 +136,19 @@
 </table>
 
 <script>
-  var songData, progressSeconds, totalSeconds, progressInterval;
   var serviceHost = "https://spotify.naush.workers.dev";
+  var spotifyUser = "Naushikha";
+
+  var songData, progressSeconds, totalSeconds, progressInterval;
+
   function updatePlayer() {
-    fetch(serviceHost + "/get-now-playing")
+    fetch(`${serviceHost}/get-now-playing`)
       .then((response) => response.json())
       .then((data) => {
         if (data.hasOwnProperty("ERROR")) {
-          document.getElementById("player-song").innerHTML =
-            "Nothing is playing currently.";
+          document.getElementById(
+            "player-song"
+          ).innerHTML = `Nothing is playing in ${spotifyUser}'s Spotify currently.`;
           document.getElementById("player-artist").innerHTML = "Spotify Widget";
           return;
         }
@@ -150,8 +157,8 @@
         document.getElementById("player-artist").innerHTML =
           data.item.artists[0].name;
         document.getElementById("player-status").innerHTML = data.is_playing
-          ? "▶️ Playing..."
-          : "⏸ Paused";
+          ? `▶️ ${spotifyUser}'s now playing...`
+          : `⏸ ${spotifyUser} has paused.`;
         document
           .getElementById("player-album-art")
           .setAttribute("src", data.item.album.images[1].url);
