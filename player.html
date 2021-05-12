@@ -148,7 +148,7 @@
         if (data.hasOwnProperty("ERROR")) {
           document.getElementById(
             "player-song"
-          ).innerHTML = `Nothing is playing in ${spotifyUser}'s Spotify currently.`;
+          ).innerHTML = `${spotifyUser} isn't playing anything.`;
           document.getElementById("player-artist").innerHTML = "Spotify Widget";
           return;
         }
