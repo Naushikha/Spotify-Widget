@@ -4,17 +4,18 @@
     background-color: #111;
     color: #fff;
     font-family: Helvetica, Arial;
-    font-size: 3vmin;
+    font-size: 5vmin;
     border-radius: 10px;
     filter: opacity(0.8);
     width: 100%;
+    height: 100%;
   "
 >
-  <tr height="200px">
+  <tr height="100%">
     <td width="20%" align="center">
       <img
         id="player-album-art"
-        style="margin: 1em; max-height: 40vmin; border-radius: 10px"
+        style="margin: 1em; max-height: 50vmin; border-radius: 10px"
       />
     </td>
     <td width="80%">
@@ -207,7 +208,7 @@
         }
 
         // Hide all the extra things in mobile (<410px)
-        if (document.getElementById("player").width < 410) {
+        if (document.getElementById("player").clientWidth < 410) {
           // Hide links
           document.getElementById("player-song-link").style.display = "none";
           document.getElementById("player-artist-link").style.display = "none";
