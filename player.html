@@ -8,7 +8,6 @@
     border-radius: 10px;
     filter: opacity(0.8);
     width: 100%;
-    height: 100%;
   "
 >
   <tr height="200px">
@@ -105,7 +104,7 @@
             "
           ></div>
         </div>
-        <div style="float: right; font-size: 0.8em;">
+        <div style="float: right; font-size: 0.8em">
           👾
           <a
             href="https://github.com/Naushikha/Spotify-Widget"
@@ -150,7 +149,7 @@
           document.getElementById(
             "player-song"
           ).innerHTML = `${spotifyUser} isn't playing anything.`;
-          document.getElementById("player-artist").innerHTML = "Spotify Widget";
+          document.getElementById("player-artist").innerHTML = "  ";
           return;
         }
         songData = data;
@@ -205,6 +204,18 @@
           progressInterval = setInterval(setProgress, 1000);
         } else {
           setProgress();
+        }
+
+        // Hide all the extra things in mobile (<410px)
+        if (document.getElementById("player").width < 410) {
+          // Hide links
+          document.getElementById("player-song-link").style.display = "none";
+          document.getElementById("player-artist-link").style.display = "none";
+          document.getElementById("player-album-link").style.display = "none";
+          document.getElementById("player-mp3-link").style.display = "none";
+
+          // Hide duration
+          document.getElementById("player-time").style.display = "none";
         }
       });
   }
